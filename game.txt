@@ -1,0 +1,351 @@
+Let's make a game!
+name:ZeroAuto
+by:Fractyl
+desc:Want those sweet sweet points? Click for them.
+created:13/09/2026
+version:0
+
+Settings
+
+no particles
+
+CSS
+
+@font-face {
+  font-family: Helvetica;
+  src: url('https://fractylizer.github.io/zeroauto/fonts/font.ttf');
+}
+@font-face {
+  font-family: Helvetica;
+  src: url('https://fractylizer.github.io/zeroauto/fonts/font-bold.ttf');
+  font-weight: bold;
+}
+
+#game
+{
+	background:#fff;
+	font-size:12px;
+	color:#000;
+	text-shadow:none;
+  font-family:"Helvetica";
+}
+
+#game.filtersOn .thing-icon{filter:none;}
+
+.box
+{
+	text-align:center;
+	padding:0px;
+	box-shadow:none;
+}
+.thing,.box-header,.box-footer,.box-bit
+{
+	background:#000;
+  margin:0;
+  color:#fff;
+  border:none;
+}
+.thing:hover
+{
+	background:#444;
+}
+
+.box-header
+{
+	margin-bottom:4px;
+}
+.box-footer
+{
+	margin-top:4px;
+}
+
+.title
+{
+	text-decoration:underline;
+}
+
+#box-main
+{
+	left:0px;
+	top:0px;
+	bottom:0px;
+	overflow:hidden;
+	width:50%;
+	position:absolute;
+  border-right:10px solid #000;
+}
+#box-res
+{
+	width:100%;
+	top:0%;
+	height:10%;
+	z-index:100;
+	position:absolute;
+}
+#box-buttons
+{
+	top:0px;
+	right:0px;
+	bottom:0px;
+	left:0px;
+	position:absolute;
+}
+#box-store
+{
+	right:0px;
+	top:0px;
+	bottom:0px;
+	width:50%;
+	position:absolute;
+}
+#box-buildings,#box-upgrades
+{
+	top:10%;
+	bottom:0px;
+	width:50%;
+	right:0%;
+	overflow-x:hidden;
+	overflow-y:scroll;
+	padding-bottom:48px;/* this is to accommodate the info and settings buttons */
+	position:absolute;
+}
+#box-buildings
+{right:50%;}
+
+#box-buildings>.box-header, #box-upgrades>.box-header
+{
+	padding:25px;
+  font-weight:bold;
+  font-size:2em;
+  margin-bottom:5px;
+}
+#bulkDisplay
+{
+	margin:0px 24px 6px 24px;
+	border:none;
+	background:transparent;
+  color:#000;
+}
+
+#box-things-Buttons {
+  width:100%;
+  height:100%;
+}
+#box-things-Resources {
+  width:100%;
+  height:100%;
+}
+.thing.zeroauto {
+  width:100%;
+  height:100%;
+  background-image:url("https://fractylizer.github.io/zeroauto/img/title.png");
+  image-rendering:pixelated;
+  background-repeat:no-repeat;
+  background-size:contain;
+  border:none;
+  background-color:#ffffff00;
+}
+.thing.points {
+  width:100%;
+  height:100%;
+  border:0px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  background-color:#fff;
+  color:#000;
+  line-height:3em;
+}
+.points .thing-text {
+  font-size:3em;
+  font-weight:bold;
+}
+
+
+.thing
+{
+	display:inline-block;
+	padding:0px;
+	cursor:pointer;
+}
+.thing:active
+{
+	opacity:0.5;
+}
+
+#box-things-Upgrades {margin-top: 26px;}
+.upgrade {
+	border:none;
+  width:100%;
+  font-size:14px;
+  color:#fff;
+}
+.upgrade.owned,.achiev.owned
+{
+	box-shadow:none;
+}
+.upgrade.owned .thing-text {
+  font-weight:bold;
+  text-decoration:underline;
+  font-size:15px;
+}
+.thing.cantAfford
+{
+	background-color:#844;
+  opacity:1;
+}
+.upgrade.cantAfford
+{
+	border:none;
+}
+
+.thing-costs{font-weight:bold;text-shadow:1px 1px 0px rgba(0,0,0,0.5);}
+.cost.hasEnough{color:#fff;}
+.cost.notEnough{color:#000;}
+
+.cost.hasEnough{color:#fff;}
+#tooltip .cost.notEnough{color:#f00;}
+
+
+.button>.thing-text
+{
+	text-decoration:underline;
+}
+
+.building
+{
+	display:block;
+	margin-right:0px;
+	font-size:14px;
+}
+
+
+.thing.bigButton:hover .thing-icon{transform:scale(1); opacity:0.9;}
+.thing.bigButton:active .thing-icon{transform:scale(1);}
+
+.thing.bigButton .thing-icon
+{
+  filter:none;
+	position:absolute;
+	margin:0px;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+}
+
+Layout
+
+*main
+  contains:buttons
+  *buttons
+    contains:Buttons
+*store
+  contains:res, buildings, upgrades
+  *res
+    contains:Resources
+  *buildings
+    contains:BulkDisplay, Buildings
+    header:Click Boosters
+    tooltip origin:left
+  *upgrades
+    contains:Upgrades
+    header:Talents
+    costs:hide
+    names:hide
+
+Buttons
+
+*zeroauto
+  class:zeroauto
+  no text
+
+*button
+  name:Button
+  desc:This'll give you all the points you need.
+  on click:yield power:ps points
+  on tick:yield 10 power
+  icon:https://fractylizer.github.io/zeroauto/img/button.png
+  class:bigButton
+  no text
+
+
+Resources
+
+*point|points
+  name:point|points
+  text:You have [this] [?(this=1)|point|points].</>Per click: [power:ps]
+  class:points
+
+*power
+  on tick:this is 0
+  hidden
+
+Buildings
+
+*cursorBoost
+  text:CURSOR: LVL [this]
+  desc:Boost the power of your cursor. +2 points per click per level.
+  cost:150 points
+  on tick:yield 2 power
+  //passive:increase yield of button by 2
+
+*buttonBoost
+  text:BUTTON: LVL [this]
+  desc:Boosts the power of the button. +10 points per click per level.
+  cost:1000 points
+  on tick:yield 10 power
+  //passive:increase yield of button by 10
+
+*energyBoost
+  text:ENERGY: LVL [this]
+  desc:Boosts the energy between the cursor and button. +80 points per click per level.
+  cost:10000 points
+  on tick:yield 80 power
+  //passive:increase yield of button by 80
+
+*durationBoost
+  text:DURATION: LVL [this]
+  desc:Boosts the duration of the click. +500 points per click per level.
+  cost:100000 points
+  on tick:yield 500 power
+  //passive:increase yield of button by 500
+
+*electricBoost
+  text:ELECTRICITY: LVL [this]
+  desc:Boosts the electricity produced by each click. +3000 points per click per level.
+  cost:2000000 points
+  on tick:yield 3000 power
+  //passive:increase yield of button by 3000
+
+Upgrades
+
+[i:talent %b="cursor" %n="1" %name="CLICKING PROWESS" %bf="the cursor" %cost="1500" %req="1"]
+[i:talent %b="cursor" %n="2" %name="CURSOR SHARPENING" %bf="the cursor" %cost="8000" %req="10"]
+[i:talent %b="cursor" %n="3" %name="CURSOR TELEKINESIS" %bf="the cursor" %cost="80000" %req="30"]
+
+[i:talent %b="button" %n="1" %name="BUTTON REPAIR" %bf="the button" %cost="1e4" %req="1"]
+[i:talent %b="button" %n="2" %name="BUTTON MANUFACTURE" %bf="the button" %cost="5e4" %req="10"]
+[i:talent %b="button" %n="3" %name="DEGREE IN BUTTONOLOGY" %bf="the button" %cost="5e5" %req="30"]
+
+[i:talent %b="energy" %n="1" %name="INNER PEACE" %bf="energy" %cost="1e5" %req="1"]
+[i:talent %b="energy" %n="2" %name="FOCUS STATE" %bf="energy" %cost="5e5" %req="10"]
+[i:talent %b="energy" %n="3" %name="ONE WITH EVERYTHING" %bf="energy" %cost="5e6" %req="30"]
+
+[i:talent %b="duration" %n="1" %name="MORE ENDURANCE" %bf="duration" %cost="1e6" %req="1"]
+[i:talent %b="duration" %n="2" %name="BETTER TIMING" %bf="duration" %cost="5e6" %req="10"]
+[i:talent %b="duration" %n="3" %name="TIME TRAVEL" %bf="duration" %cost="6e6" %req="30"]
+
+[i:talent %b="electric" %n="1" %name="EXTRA BATTERIES" %bf="electricity" %cost="2e7" %req="1"]
+[i:talent %b="electric" %n="2" %name="MAGNETIC VOLTAGE" %bf="electricity" %cost="1e8" %req="10"]
+[i:talent %b="electric" %n="3" %name="FULL CONDUCTIVITY" %bf="electricity" %cost="1e9" %req="30"]
+
+Includes
+
+*include talent %b %n %name %bf %cost %req
+  *[%b]Upg[%n]
+    name:[%name]
+    desc:Boosting [%bf] is twice as effective.
+    passive:multiply yield of [%b]Boost by 2
+    cost:[%cost] points
+    req:[%req] [%b]Boost
