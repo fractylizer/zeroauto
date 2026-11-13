@@ -1,9 +1,9 @@
 Let's make a game!
 name:ZeroAuto
 by:Fractyl
-desc:Want those sweet sweet points? Click for them.
+desc:A game with no automation. Want those sweet sweet points? You gotta click for them.
 created:13/09/2026
-version:0
+version:1
 
 Settings
 
@@ -12,11 +12,11 @@ no particles
 CSS
 
 @font-face {
-  font-family: Helvetica;
+  font-family: Font;
   src: url('https://fractylizer.github.io/zeroauto/fonts/font.ttf');
 }
 @font-face {
-  font-family: Helvetica;
+  font-family: Font;
   src: url('https://fractylizer.github.io/zeroauto/fonts/font-bold.ttf');
   font-weight: bold;
 }
@@ -27,7 +27,7 @@ CSS
 	font-size:12px;
 	color:#000;
 	text-shadow:none;
-  font-family:"Helvetica";
+  font-family:Font, Arial, sans-serif;
 }
 
 #game.filtersOn .thing-icon{filter:none;}
@@ -259,6 +259,7 @@ Buttons
 *zeroauto
   class:zeroauto
   no text
+  no click
 
 *button
   name:Button
@@ -276,9 +277,14 @@ Resources
   name:point|points
   text:You have [this] [?(this=1)|point|points].</>Per click: [power:ps]
   class:points
+  no click
 
 *power
   on tick:this is 0
+  hidden
+
+*boost|boosts
+  is always:cursorBoost+buttonBoost+energyBoost+durationBoost+electricBoost
   hidden
 
 Buildings
@@ -340,6 +346,41 @@ Upgrades
 [i:talent %b="electric" %n="2" %name="MAGNETIC VOLTAGE" %bf="electricity" %cost="1e8" %req="10"]
 [i:talent %b="electric" %n="3" %name="FULL CONDUCTIVITY" %bf="electricity" %cost="1e9" %req="30"]
 
+Achievements
+
+[i:pointsAch %n="1" %name="Humble beginnings." %p="1"]
+[i:pointsAch %n="2" %name="Manual labour." %p="1000"]
+[i:pointsAch %n="3" %name="Some clicking required." %p="1e4"]
+[i:pointsAch %n="4" %name="Safety not guaranteed." %p="1e5"]
+[i:pointsAch %n="5" %name="Pushing my buttons." %p="1e6"]
+[i:pointsAch %n="6" %name="Is the dopamine there yet?" %p="1e7"]
+[i:pointsAch %n="7" %name="Points for nothing." %p="1e8"]
+[i:pointsAch %n="8" %name="Self-made billionaire." %p="1e9"]
+
+[i:boostAch %b="cursor" %n="1" %name="Clicking harder." %lvl="1" %bf="the cursor"]
+[i:boostAch %b="cursor" %n="2" %name="Clicking better." %lvl="10" %bf="the cursor"]
+[i:boostAch %b="cursor" %n="3" %name="Clicking stronger." %lvl="50" %bf="the cursor"]
+
+[i:boostAch %b="button" %n="1" %name="Button up." %lvl="1" %bf="the button"]
+[i:boostAch %b="button" %n="2" %name="Button enthusiast." %lvl="10" %bf="the button"]
+[i:boostAch %b="button" %n="3" %name="Better buttons." %lvl="50" %bf="the button"]
+
+[i:boostAch %b="energy" %n="1" %name="Go with the flow." %lvl="1" %bf="energy"]
+[i:boostAch %b="energy" %n="2" %name="Quite energized." %lvl="10" %bf="energy"]
+[i:boostAch %b="energy" %n="3" %name="Master of energy." %lvl="50" %bf="energy"]
+
+[i:boostAch %b="duration" %n="1" %name="Long-lasting." %lvl="1" %bf="duration"]
+[i:boostAch %b="duration" %n="2" %name="More of a good thing." %lvl="10" %bf="duration"]
+[i:boostAch %b="duration" %n="3" %name="Stretching time." %lvl="50" %bf="duration"]
+
+[i:boostAch %b="electric" %n="1" %name="A small shock." %lvl="1" %bf="electricity"]
+[i:boostAch %b="electric" %n="2" %name="Current affairs." %lvl="10" %bf="electricity"]
+[i:boostAch %b="electric" %n="3" %name="Closed circuit." %lvl="50" %bf="electricity"]
+
+[i:totalBoostsAch %n="1" %name="First time booster." %lvl="1"]
+[i:totalBoostsAch %n="2" %name="Beginner booster." %lvl="20"]
+[i:totalBoostsAch %n="3" %name="Advanced booster." %lvl="100"]
+
 Includes
 
 *include talent %b %n %name %bf %cost %req
@@ -349,3 +390,21 @@ Includes
     passive:multiply yield of [%b]Boost by 2
     cost:[%cost] points
     req:[%req] [%b]Boost
+
+*include pointsAch %n %name %p
+  *pointsAch[%n]
+    name:[%name]
+    desc:Earn [[%p]] [?([%p]=1)|point|points] total.
+    req:[%p] points:earned
+
+*include boostAch %b %n %name %lvl %bf
+  *[%b]BoostAch[%n]
+    name:[%name]
+    desc:Boost [%bf] to level [[%lvl]].
+    req:[%lvl] [%b]Boost
+
+*include totalBoostsAch %n %name %lvl
+  *totalBoostAch[%n]
+    name:[%name]
+    desc:Have [[%lvl]] levels across all boosts.
+    req:[%lvl] boosts
